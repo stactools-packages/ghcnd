@@ -1,30 +1,28 @@
 import unittest
 
-from stactools.ephemeral import stac
+from stactools.ghcnd import stac
+from stactools.ghcnd.constants import DOI, GHCND_EPSG, GHCND_ID, LICENSE
 
 
 class StacTest(unittest.TestCase):
     def test_create_collection(self):
-        # Write tests for each for the creation of a STAC Collection
-        # Create the STAC Collection...
         collection = stac.create_collection()
         collection.set_self_href("")
 
-        # Check that it has some required attributes
-        self.assertEqual(collection.id, "my-collection-id")
-        # self.assertEqual(collection.other_attr...
+        self.assertEqual(collection.id, GHCND_ID)
+        self.assertEqual(collection.license, LICENSE)
+        self.assertEqual(collection.extra_fields["sci:doi"], DOI)
+        self.assertEqual(len(collection.extra_fields["item_assets"]), 3)
 
-        # Validate
         collection.validate()
 
     def test_create_item(self):
-        # Write tests for each for the creation of STAC Items
-        # Create the STAC Item...
-        item = stac.create_item("/path/to/asset.tif")
+        item = stac.create_item("path/to/files/1900.csv.gz")
 
-        # Check that it has some required attributes
-        self.assertEqual(item.id, "my-item-id")
-        # self.assertEqual(item.other_attr...
+        self.assertEqual(item.id, f"GHCNd_{1900}")
+        self.assertEqual(item.properties["sci:doi"], DOI)
+        self.assertEqual(item.properties["proj:epsg"], GHCND_EPSG)
+        self.assertEqual(len(item.assets), 3)
 
         # Validate
         item.validate()

@@ -1,0 +1,128 @@
+{
+  "type": "Collection",
+  "id": "ghcnd",
+  "stac_version": "1.0.0",
+  "description": "The Global Historical Climatology Network daily (GHCNd) is an integrated database of daily climate summaries from land surface stations across the globe. GHCNd is made up of daily climate records from numerous sources that have been integrated and subjected to a common suite of quality assurance reviews.",
+  "links": [
+    {
+      "rel": "root",
+      "href": "./collection.json",
+      "type": "application/json"
+    },
+    {
+      "rel": "cite-as",
+      "href": "https://doi.org/10.7289/V5D21VHZ"
+    },
+    {
+      "rel": "via",
+      "href": "https://www.ncei.noaa.gov/metadata/geoportal/rest/metadata/item/gov.noaa.ncdc:C00861/html",
+      "title": "Homepage"
+    },
+    {
+      "rel": "self",
+      "href": "/home/jvrt/gdspark/202105_stactools/.vscode/ghcnd/collection.json",
+      "type": "application/json"
+    }
+  ],
+  "stac_extensions": [
+    "https://stac-extensions.github.io/scientific/v1.0.0/schema.json",
+    "https://stac-extensions.github.io/item-assets/v1.0.0/schema.json"
+  ],
+  "sci:doi": "10.7289/V5D21VHZ",
+  "sci:citation": "Menne, Matthew J., Imke Durre, Bryant Korzeniewski, Shelley McNeal, Kristy Thomas, Xungang Yin, Steven Anthony, Ron Ray, Russell S. Vose, Byron E.Gleason, and Tamara G. Houston (2012): Global Historical Climatology Network - Daily (GHCN-Daily), Version 3. NOAA National Climatic Data Center. doi:10.7289/V5D21VHZ",
+  "item_assets": {
+    "GHCNd": {
+      "types": [
+        "application/zip"
+      ],
+      "roles": [
+        "data"
+      ],
+      "title": "GHCNd Data",
+      "proj:epsg": 4326
+    },
+    "Stations": {
+      "types": [
+        "text/plain"
+      ],
+      "roles": [
+        "metadata"
+      ],
+      "title": "GHCNd Stations",
+      "proj:epsg": 4326
+    },
+    "Metadata": {
+      "types": [
+        "text/plain"
+      ],
+      "roles": [
+        "metadata"
+      ],
+      "title": "Metadata"
+    }
+  },
+  "title": "Global Historical Climatology Network daily",
+  "extent": {
+    "spatial": {
+      "bbox": [
+        [
+          -180.0,
+          -90.0,
+          180.0,
+          85.0
+        ]
+      ]
+    },
+    "temporal": {
+      "interval": [
+        [
+          "1763-01-01T00:00:00Z",
+          null
+        ]
+      ]
+    }
+  },
+  "license": "CC-BY-4.0",
+  "providers": [
+    {
+      "name": "NOAA",
+      "roles": [
+        "host",
+        "licensor",
+        "processor",
+        "producer"
+      ],
+      "url": "https://www.ncei.noaa.gov/metadata/geoportal/rest/metadata/item/gov.noaa.ncdc:C00861/html"
+    },
+    {
+      "name": "Microsoft",
+      "roles": [
+        "host"
+      ],
+      "url": "https://planetarycomputer.microsoft.com"
+    }
+  ],
+  "summaries": {
+    "proj:epsg": [
+      4326
+    ]
+  },
+  "assets": {
+    "GHCNd Stations": {
+      "href": "https://www1.ncdc.noaa.gov/pub/data/ghcn/daily/ghcnd-stations.txt",
+      "type": "text/plain",
+      "title": "GHCNd Stations",
+      "roles": [
+        "metadata"
+      ]
+    },
+    "Metadata": {
+      "href": "https://www1.ncdc.noaa.gov/pub/data/ghcn/daily/by_year/readme-by_year.txt",
+      "type": "text/plain",
+      "title": "Metadata",
+      "roles": [
+        "metadata"
+      ]
+    }
+  }
+}

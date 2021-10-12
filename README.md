@@ -1,18 +1,35 @@
-# stactools-template
+[![Binder](https://mybinder.org/badge_logo.svg)](https://mybinder.org/v2/gh/stactools-packages/ghcnd/main?filepath=docs/installation_and_basic_usage.ipynb)
 
-This is a template repo used for creating new packages for `stactools`.
+# stactools-ghcnd
 
-## How to use
+- Name: ghcnd
+- Package: `stactools.ghcnd`
+- Owner: @jamesvrt
+- Dataset homepage: https://www.ncei.noaa.gov/metadata/geoportal/rest/metadata/item/gov.noaa.ncdc:C00861/html
+- STAC extensions used:
+  - [proj](https://github.com/stac-extensions/projection/)
+  - [scientific](https://github.com/stac-extensions/scientific/)
+  - [item-assets](https://github.com/stac-extensions/item-assets/)
 
-1. Clone this template repository as your package name, e.g. `landsat`.
-   This name should be short, memorable, and a valid Python package name (i.e. it shouldn't start with a number, etc).
-   It can, however, include a hyphen, in which case the name for Python imports will be the underscored version, e.g. `landsat-8` goes to `stactools.landsat_8`.
-   Your name will be used on PyPI to publish the package in the stactools namespace, e.g. `stactools-landsat`.
-2. Change into the top-level directory of your package and run `scripts/rename`.
-   This will update _most_ of the files in the repository with your new package name.
-3. Update `setup.cfg` with your package description and such.
-4. Update the LICENSE with your company's information (or whomever holds the copyright).
-5. Run `sphinx-quickstart` in the `docs` directory to create the documentation template.
-6. Update `docs/installation_and_basic_usage.ipynb` to provide an interactive notebook to help users get started. Include the following badge at the top of the README to launch the notebook: [![Binder](https://mybinder.org/badge_logo.svg)](https://mybinder.org/v2/gh/stactools-packages/template/main?filepath=docs/installation_and_basic_usage.ipynb). Be sure to modify the badge href to match your package repo.
-7. Add example Items (and Collections and Catalogs, if included) to a `examples/` directory.
-8. Delete this file, and rename `README-template.md` to `README.md`. Update your new README to provide information about how to use your package.
+The Global Historical Climatology Network daily (GHCNd) is an integrated database of daily climate summaries from land surface stations across the globe. GHCNd is made up of daily climate records from numerous sources that have been integrated and subjected to a common suite of quality assurance reviews.
+
+## Examples
+
+### STAC objects
+
+- [Collection](examples/collection.json)
+- [Item](examples/item/item.json)
+
+### Command-line usage
+
+Description of the command line functions
+
+```bash
+$ stac ghcnd create-item -s source -d destination
+
+$ stac ghcnd create-collection -d destination
+
+$ stac ghcnd populate-collection -s source -d destination --start_year 1900 --end_year 1910
+```
+
+Use `stac ghcnd --help` to see all subcommands and options.
