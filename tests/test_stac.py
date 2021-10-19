@@ -17,12 +17,12 @@ class StacTest(unittest.TestCase):
         collection.validate()
 
     def test_create_item(self):
-        item = stac.create_item("path/to/files/1900.csv.gz")
+        item = stac.create_item("tests/data/1763-1764.csv")
 
-        self.assertEqual(item.id, f"GHCNd_{1900}")
+        self.assertEqual(item.id, "GHCNd")
         self.assertEqual(item.properties["sci:doi"], DOI)
         self.assertEqual(item.properties["proj:epsg"], GHCND_EPSG)
-        self.assertEqual(len(item.assets), 3)
+        self.assertEqual(len(item.assets), 4)
 
         # Validate
         item.validate()

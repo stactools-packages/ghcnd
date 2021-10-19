@@ -1,11 +1,23 @@
 import logging
+import mimetypes
+from typing import Any, List
 
-from pystac import (CatalogType, Collection, Extent, MediaType, SpatialExtent,
-                    TemporalExtent)
+import fsspec
+from pystac import (
+    CatalogType,
+    Collection,
+    Extent,
+    MediaType,
+    SpatialExtent,
+    TemporalExtent,
+)
 from pystac.asset import Asset
+from pystac.extensions.file import FileExtension
 from pystac.extensions.item_assets import AssetDefinition, ItemAssetsExtension
-from pystac.extensions.projection import (ProjectionExtension,
-                                          SummariesProjectionExtension)
+from pystac.extensions.projection import (
+    ProjectionExtension,
+    SummariesProjectionExtension,
+)
 from pystac.extensions.scientific import ScientificExtension
 from pystac.item import Item
 from pystac.link import Link
@@ -13,11 +25,28 @@ from pystac.rel_type import RelType
 from pystac.utils import str_to_datetime
 from shapely.geometry.geo import box
 
-from stactools.ghcnd.constants import (CITATION, DOI, GHCND_DESCRIPTION,
-                                       GHCND_EPSG, GHCND_ID, GHCND_TITLE,
-                                       HOMEPAGE, LICENSE, METADATA_URL,
-                                       PROVIDERS, SPATIAL_EXTENT, STATIONS_URL,
-                                       TEMPORAL_EXTENT)
+from stactools.ghcnd.constants import (
+    ADDITIONAL_METADATA_URL,
+    CITATION,
+    DATA_TABLE_COLUMNS,
+    DOI,
+    ELEMENTS_VALUES,
+    GHCND_CRS,
+    GHCND_DESCRIPTION,
+    GHCND_EPSG,
+    GHCND_ID,
+    GHCND_TITLE,
+    HOMEPAGE_URL,
+    LICENSE,
+    LICENSE_LINK,
+    METADATA_URL,
+    PRIMARY_GEOMETRY_COLUMN,
+    PROVIDERS,
+    SPATIAL_EXTENT,
+    STATION_TABLE_COLUMNS,
+    STATIONS_URL,
+    TEMPORAL_EXTENT,
+)
 
 logger = logging.getLogger(__name__)
 
@@ -70,7 +99,16 @@ def create_collection() -> Collection:
               title="Metadata",
               href=METADATA_URL))
 
-    collection.add_link(Link(RelType.VIA, target=HOMEPAGE, title="Homepage"))
+    collection.add_asset(
+        "Metadata, Additional",
+        Asset(media_type=MediaType.TEXT,
+              roles=["metadata"],
+              title="Metadata, Additional",
+              href=ADDITIONAL_METADATA_URL))
+
+    collection.add_link(LICENSE_LINK)
+    collection.add_link(
+        Link(RelType.VIA, target=HOMEPAGE_URL, title="HOMEPAGE_URL"))
 
     item_asset_ext = ItemAssetsExtension.ext(collection, add_if_missing=True)
     item_asset_ext.item_assets = {
@@ -99,67 +137,80 @@ def create_collection() -> Collection:
     return collection
 
 
-def create_item(asset_href: str) -> Item:
+def create_item(data_asset_href: str) -> Item:
     """Create a STAC Item
-    Create a STAC Item for one year of the GHCNd. The asset_href should include
-     the observation year as the first part of the filename.
+    Create a STAC Item for one year of the GHCNd.
 
     Args:
-        asset_href (str): The HREF pointing to an asset associated with the item
+        data_asset_href (str): The HREF pointing to the data asset associated with the item
 
     Returns:
         Item: STAC Item object
     """
 
-    year = asset_href.split("/")[-1][:4]
-    try:
-        int(year)
-    except ValueError:
-        print("Asset URL does not contain the year")
-
     polygon = box(*SPATIAL_EXTENT, ccw=True)
     coordinates = [list(i) for i in list(polygon.exterior.coords)]
     geometry = {"type": "Polygon", "coordinates": [coordinates]}
 
+    # Data & Station tables assumed to be left merged on column "ID"
+    table_columns = DATA_TABLE_COLUMNS + STATION_TABLE_COLUMNS + [
+        PRIMARY_GEOMETRY_COLUMN
+    ]
+    table_columns = [
+        i for n, i in enumerate(table_columns)
+        if i not in table_columns[n + 1:]
+    ]
+
     properties = {
-        "title": f"GHCNd {year}",
-        "description":
-        f"Global Historical Climate Network-daily for the year {year}",
-        "start_datetime": f"{year}-01-01T00:00:00Z",
-        "end_datetime": f"{int(year)+1}-01-01T00:00:00Z",
+        "title": "GHCNd",
+        "description": "Global Historical Climate Network-daily",
+        "start_datetime": TEMPORAL_EXTENT[0],
+        "end_datetime": TEMPORAL_EXTENT[1],
+        "table:columns": table_columns,
+        "table:primary_geometry": PRIMARY_GEOMETRY_COLUMN["name"],
     }
 
     item = Item(
-        id=f"GHCNd_{year}",
+        id="GHCNd",
         geometry=geometry,
         bbox=SPATIAL_EXTENT,
-        datetime=str_to_datetime(f"{year}, 1, 1"),
+        datetime=str_to_datetime(TEMPORAL_EXTENT[0]),
         properties=properties,
-    )
+        stac_extensions=[
+            "https://stac-extensions.github.io/table/v1.0.0/schema.json"
+        ])
 
+    # Scientific Extension
     sci_ext = ScientificExtension.ext(item, add_if_missing=True)
     sci_ext.doi = DOI
     sci_ext.citation = CITATION
 
-    proj_attrs = ProjectionExtension.ext(item, add_if_missing=True)
-    proj_attrs.epsg = GHCND_EPSG
+    # Projection Extensions
+    proj_ext = ProjectionExtension.ext(item, add_if_missing=True)
+    proj_ext.epsg = GHCND_EPSG
+    proj_ext.wkt2 = GHCND_CRS.to_wkt()
+    proj_ext.bbox = SPATIAL_EXTENT
+    proj_ext.geometry = geometry
 
-    item.add_asset(
-        "data",
-        Asset(
-            href=asset_href,
-            media_type="application/zip",
-            roles=["data"],
-            title=f"GHCNd {year}",
-        ),
-    )
+    media_type = mimetypes.guess_type(data_asset_href)[0]
+    data_asset = Asset(href=data_asset_href,
+                       media_type=media_type,
+                       roles=["data"],
+                       title="GHCNd Values",
+                       extra_fields={
+                           "table:columns": table_columns,
+                       })
+    item.add_asset("data", data_asset)
 
     item.add_asset(
         "GHCNd Stations",
         Asset(media_type=MediaType.TEXT,
               roles=["metadata"],
               title="GHCNd Stations",
-              href=STATIONS_URL))
+              href=STATIONS_URL,
+              extra_fields={
+                  "table:columns": STATION_TABLE_COLUMNS,
+              }))
 
     item.add_asset(
         "Metadata",
@@ -167,5 +218,33 @@ def create_item(asset_href: str) -> Item:
               roles=["metadata"],
               title="GHCNd Metadata",
               href=METADATA_URL))
+
+    item.add_asset(
+        "Metadata, Additional",
+        Asset(media_type=MediaType.TEXT,
+              roles=["metadata"],
+              title="Metadata, Additional",
+              href=ADDITIONAL_METADATA_URL))
+
+    # Asset Projection Extension
+    data_asset_proj_ext = ProjectionExtension.ext(data_asset,
+                                                  add_if_missing=True)
+    data_asset_proj_ext.epsg = proj_ext.epsg
+    data_asset_proj_ext.wkt2 = proj_ext.wkt2
+    data_asset_proj_ext.bbox = proj_ext.bbox
+    data_asset_proj_ext.geometry = proj_ext.geometry
+
+    # File Extension
+    data_asset_file_ext = FileExtension.ext(data_asset, add_if_missing=True)
+    # The following odd type annotation is needed
+    mapping: List[Any] = [{
+        "values": [value],
+        "summary": summary,
+    } for value, summary in ELEMENTS_VALUES.items()]
+    data_asset_file_ext.values = mapping
+    with fsspec.open(data_asset_href) as file:
+        size = file.size
+        if size is not None:
+            data_asset_file_ext.size = size
 
     return item

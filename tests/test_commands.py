@@ -41,7 +41,7 @@ class CommandsTest(CliTestCase):
                 "ghcnd",
                 "create-item",
                 "-s",
-                "path/to/files/1900.csv.gz",
+                "tests/data/1763-1764.csv",
                 "-d",
                 destination,
             ])
@@ -53,22 +53,23 @@ class CommandsTest(CliTestCase):
             self.assertEqual(len(jsons), 1)
 
             item = pystac.read_file(destination)
-            self.assertEqual(item.id, f"GHCNd_{1900}")
+            self.assertEqual(item.id, "GHCNd")
             self.assertEqual(item.properties["sci:doi"], DOI)
             self.assertEqual(item.properties["proj:epsg"], GHCND_EPSG)
-            self.assertEqual(len(item.assets), 3)
+            self.assertEqual(len(item.assets), 4)
 
             item.validate()
 
     def test_populate_collection(self):
         with TemporaryDirectory() as tmp_dir:
+
             result = self.run_command([
-                "ghcnd", "populate-collection", "-d", tmp_dir, "-st", "1900",
-                "-e", "1910"
+                "ghcnd", "populate-collection", "-s",
+                "tests/data/1763-1764.csv", "-d", tmp_dir
             ])
             self.assertEqual(result.exit_code,
                              0,
                              msg="\n{}".format(result.output))
 
             jsons = [p for p in Path(tmp_dir).rglob('*.json')]
-            self.assertEqual(len(jsons), 12)
+            self.assertEqual(len(jsons), 2)

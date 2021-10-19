@@ -80,33 +80,19 @@ def create_ghcnd_command(cli):
         required=True,
         help="The output directory for the STAC Collection.",
     )
-    @click.option(
-        "-st",
-        "--start_year",
-        required=False,
-        help="The starting year of the collection (earliest possible is 1763).",
-        default="1763")
-    @click.option("-e",
-                  "--end_year",
-                  required=False,
-                  help="The end year of the collection.",
-                  default="2021")
-    def populate_collection_command(source: str, destination: str,
-                                    start_year: str, end_year: str):
+    def populate_collection_command(source: str, destination: str):
         """Populate the GHCNd STAC Collection with all items
 
         Args:
+            source (str): HREF of the Asset associated with the Item
             destination (str): An HREF for the STAC Collection
         """
 
         collection = stac.create_collection()
 
         # Create items for all years in range
-        for year in range(int(start_year), int(end_year) + 1):
-            asset_href = f"{source}{year}.csv.gz"
-            item = stac.create_item(asset_href)
-            collection.add_item(item)
-            print(f"Created STAC Item {item.id}")
+        item = stac.create_item(source)
+        collection.add_item(item)
 
         collection.normalize_hrefs(destination)
         collection.save(dest_href=destination)
