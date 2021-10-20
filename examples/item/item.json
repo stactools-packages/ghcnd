@@ -1,16 +1,132 @@
 {
   "type": "Feature",
   "stac_version": "1.0.0",
-  "id": "GHCNd_1900",
+  "id": "GHCNd",
   "properties": {
-    "title": "GHCNd 1900",
-    "description": "Global Historical Climate Network-daily for the year 1900",
-    "start_datetime": "1900-01-01T00:00:00Z",
-    "end_datetime": "1901-01-01T00:00:00Z",
+    "title": "GHCNd",
+    "description": "Global Historical Climate Network-daily",
+    "start_datetime": "1763-01-01T00:00:00Z",
+    "end_datetime": "2021-10-19T00:00:00Z",
+    "table:columns": [
+      {
+        "name": "YEAR/MONTH/DAY",
+        "description": "8 character date in YYYYMMDD format (e.g. 19860529 = May 29, 1986).",
+        "type": "str"
+      },
+      {
+        "name": "ELEMENT",
+        "description": "4 character indicator of element type.",
+        "type": "str"
+      },
+      {
+        "name": "DATA VALUE",
+        "description": "5 character data value for ELEMENT.",
+        "type": "int"
+      },
+      {
+        "name": "M-FLAG",
+        "description": "1 character Measurement Flag.",
+        "type": "str"
+      },
+      {
+        "name": "Q-FLAG",
+        "description": "1 character Quality Flag.",
+        "type": "str"
+      },
+      {
+        "name": "S-FLAG",
+        "description": "1 character Source Flag.",
+        "type": "str"
+      },
+      {
+        "name": "OBS-TIME",
+        "description": "4-character time of observation in hour-minute format (i.e. 0700 = 7:00 am).",
+        "type": "str"
+      },
+      {
+        "name": "ID",
+        "description": "11 character station identification code.",
+        "type": "str"
+      },
+      {
+        "name": "LATITUDE",
+        "description": "Latitude of the station (in decimal degrees).",
+        "type": "float"
+      },
+      {
+        "name": "LONGITUDE",
+        "description": "Longitude of the station (in decimal degrees).",
+        "type": "float"
+      },
+      {
+        "name": "ELEVATION",
+        "description": "Elevation of the station (in meters, missing = -999.9).",
+        "type": "float"
+      },
+      {
+        "name": "STATE",
+        "description": "U.S. postal code for the state (for U.S. stations only).",
+        "type": "str"
+      },
+      {
+        "name": "NAME",
+        "description": "The name of the station.",
+        "type": "str"
+      },
+      {
+        "name": "GSN FLAG",
+        "description": "A flag that indicates whether the station is part of the GCOS Surface Network (GSN).",
+        "type": "str"
+      },
+      {
+        "name": "HCN/CRN FLAT",
+        "description": "A flag that indicates whether the station is part of the U.S. Historical Climatology Network (HCN) or U.S. Climate Refererence Network (CRN).",
+        "type": "str"
+      },
+      {
+        "name": "WMO ID",
+        "description": "the World Meteorological Organization (WMO) number for the station. If the station has no WMO number (or one has not yet been matched to this station), then the field is blank.",
+        "type": "str"
+      }
+    ],
     "sci:doi": "10.7289/V5D21VHZ",
     "sci:citation": "Menne, Matthew J., Imke Durre, Bryant Korzeniewski, Shelley McNeal, Kristy Thomas, Xungang Yin, Steven Anthony, Ron Ray, Russell S. Vose, Byron E.Gleason, and Tamara G. Houston (2012): Global Historical Climatology Network - Daily (GHCN-Daily), Version 3. NOAA National Climatic Data Center. doi:10.7289/V5D21VHZ",
     "proj:epsg": 4326,
-    "datetime": "1900-01-01T00:00:00Z"
+    "proj:wkt2": "GEOGCRS[\"WGS 84\",ENSEMBLE[\"World Geodetic System 1984 ensemble\",MEMBER[\"World Geodetic System 1984 (Transit)\"],MEMBER[\"World Geodetic System 1984 (G730)\"],MEMBER[\"World Geodetic System 1984 (G873)\"],MEMBER[\"World Geodetic System 1984 (G1150)\"],MEMBER[\"World Geodetic System 1984 (G1674)\"],MEMBER[\"World Geodetic System 1984 (G1762)\"],ELLIPSOID[\"WGS 84\",6378137,298.257223563,LENGTHUNIT[\"metre\",1]],ENSEMBLEACCURACY[2.0]],PRIMEM[\"Greenwich\",0,ANGLEUNIT[\"degree\",0.0174532925199433]],CS[ellipsoidal,2],AXIS[\"geodetic latitude (Lat)\",north,ORDER[1],ANGLEUNIT[\"degree\",0.0174532925199433]],AXIS[\"geodetic longitude (Lon)\",east,ORDER[2],ANGLEUNIT[\"degree\",0.0174532925199433]],USAGE[SCOPE[\"Horizontal component of 3D system.\"],AREA[\"World.\"],BBOX[-90,-180,90,180]],ID[\"EPSG\",4326]]",
+    "proj:bbox": [
+      -180.0,
+      -90.0,
+      180.0,
+      85.0
+    ],
+    "proj:geometry": {
+      "type": "Polygon",
+      "coordinates": [
+        [
+          [
+            180.0,
+            -90.0
+          ],
+          [
+            180.0,
+            85.0
+          ],
+          [
+            -180.0,
+            85.0
+          ],
+          [
+            -180.0,
+            -90.0
+          ],
+          [
+            180.0,
+            -90.0
+          ]
+        ]
+      ]
+    },
+    "datetime": "1763-01-01T00:00:00Z"
   },
   "geometry": {
     "type": "Polygon",
@@ -47,9 +163,471 @@
   ],
   "assets": {
     "data": {
-      "href": "path/to/files/1900.csv.gz",
-      "type": "application/zip",
-      "title": "GHCNd 1900",
+      "href": "ghcnd/tests/data/1763.csv",
+      "type": "text/csv",
+      "title": "GHCNd Values",
+      "table:columns": [
+        {
+          "name": "YEAR/MONTH/DAY",
+          "description": "8 character date in YYYYMMDD format (e.g. 19860529 = May 29, 1986).",
+          "type": "str"
+        },
+        {
+          "name": "ELEMENT",
+          "description": "4 character indicator of element type.",
+          "type": "str"
+        },
+        {
+          "name": "DATA VALUE",
+          "description": "5 character data value for ELEMENT.",
+          "type": "int"
+        },
+        {
+          "name": "M-FLAG",
+          "description": "1 character Measurement Flag.",
+          "type": "str"
+        },
+        {
+          "name": "Q-FLAG",
+          "description": "1 character Quality Flag.",
+          "type": "str"
+        },
+        {
+          "name": "S-FLAG",
+          "description": "1 character Source Flag.",
+          "type": "str"
+        },
+        {
+          "name": "OBS-TIME",
+          "description": "4-character time of observation in hour-minute format (i.e. 0700 = 7:00 am).",
+          "type": "str"
+        },
+        {
+          "name": "ID",
+          "description": "11 character station identification code.",
+          "type": "str"
+        },
+        {
+          "name": "LATITUDE",
+          "description": "Latitude of the station (in decimal degrees).",
+          "type": "float"
+        },
+        {
+          "name": "LONGITUDE",
+          "description": "Longitude of the station (in decimal degrees).",
+          "type": "float"
+        },
+        {
+          "name": "ELEVATION",
+          "description": "Elevation of the station (in meters, missing = -999.9).",
+          "type": "float"
+        },
+        {
+          "name": "STATE",
+          "description": "U.S. postal code for the state (for U.S. stations only).",
+          "type": "str"
+        },
+        {
+          "name": "NAME",
+          "description": "The name of the station.",
+          "type": "str"
+        },
+        {
+          "name": "GSN FLAG",
+          "description": "A flag that indicates whether the station is part of the GCOS Surface Network (GSN).",
+          "type": "str"
+        },
+        {
+          "name": "HCN/CRN FLAT",
+          "description": "A flag that indicates whether the station is part of the U.S. Historical Climatology Network (HCN) or U.S. Climate Refererence Network (CRN).",
+          "type": "str"
+        },
+        {
+          "name": "WMO ID",
+          "description": "the World Meteorological Organization (WMO) number for the station. If the station has no WMO number (or one has not yet been matched to this station), then the field is blank.",
+          "type": "str"
+        }
+      ],
+      "proj:epsg": 4326,
+      "proj:wkt2": "GEOGCRS[\"WGS 84\",ENSEMBLE[\"World Geodetic System 1984 ensemble\",MEMBER[\"World Geodetic System 1984 (Transit)\"],MEMBER[\"World Geodetic System 1984 (G730)\"],MEMBER[\"World Geodetic System 1984 (G873)\"],MEMBER[\"World Geodetic System 1984 (G1150)\"],MEMBER[\"World Geodetic System 1984 (G1674)\"],MEMBER[\"World Geodetic System 1984 (G1762)\"],ELLIPSOID[\"WGS 84\",6378137,298.257223563,LENGTHUNIT[\"metre\",1]],ENSEMBLEACCURACY[2.0]],PRIMEM[\"Greenwich\",0,ANGLEUNIT[\"degree\",0.0174532925199433]],CS[ellipsoidal,2],AXIS[\"geodetic latitude (Lat)\",north,ORDER[1],ANGLEUNIT[\"degree\",0.0174532925199433]],AXIS[\"geodetic longitude (Lon)\",east,ORDER[2],ANGLEUNIT[\"degree\",0.0174532925199433]],USAGE[SCOPE[\"Horizontal component of 3D system.\"],AREA[\"World.\"],BBOX[-90,-180,90,180]],ID[\"EPSG\",4326]]",
+      "proj:bbox": [
+        -180.0,
+        -90.0,
+        180.0,
+        85.0
+      ],
+      "proj:geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              180.0,
+              -90.0
+            ],
+            [
+              180.0,
+              85.0
+            ],
+            [
+              -180.0,
+              85.0
+            ],
+            [
+              -180.0,
+              -90.0
+            ],
+            [
+              180.0,
+              -90.0
+            ]
+          ]
+        ]
+      },
+      "file:values": [
+        {
+          "values": [
+            "PRCP"
+          ],
+          "summary": "Precipitation (tenths of mm)"
+        },
+        {
+          "values": [
+            "SNOW"
+          ],
+          "summary": "Snowfall (mm)"
+        },
+        {
+          "values": [
+            "SNWD"
+          ],
+          "summary": "Snow depth (mm)"
+        },
+        {
+          "values": [
+            "TMAX"
+          ],
+          "summary": "Maximum temperature (tenths of degrees C)"
+        },
+        {
+          "values": [
+            "TMIN"
+          ],
+          "summary": "Minimum temperature (tenths of degrees C)"
+        },
+        {
+          "values": [
+            "ACMC"
+          ],
+          "summary": "Average cloudiness midnight to midnight from 30-second ceilometer data (percent)"
+        },
+        {
+          "values": [
+            "ACMH"
+          ],
+          "summary": "Average cloudiness midnight to midnight from manual observations (percent)"
+        },
+        {
+          "values": [
+            "ACSC"
+          ],
+          "summary": "Average cloudiness sunrise to sunset from 30-second ceilometer data (percent)"
+        },
+        {
+          "values": [
+            "ACSH"
+          ],
+          "summary": "Average cloudiness sunrise to sunset from manual observations (percent)"
+        },
+        {
+          "values": [
+            "AWDR"
+          ],
+          "summary": "Average daily wind direction (degrees)"
+        },
+        {
+          "values": [
+            "AWND"
+          ],
+          "summary": "Average daily wind speed (tenths of meters per second)"
+        },
+        {
+          "values": [
+            "DAEV"
+          ],
+          "summary": "Number of days included in the multiday evaporation total (MDEV)"
+        },
+        {
+          "values": [
+            "DAPR"
+          ],
+          "summary": "Number of days included in the multiday precipiation total (MDPR)"
+        },
+        {
+          "values": [
+            "DASF"
+          ],
+          "summary": "Number of days included in the multiday snowfall total (MDSF)"
+        },
+        {
+          "values": [
+            "DATN"
+          ],
+          "summary": "Number of days included in the multiday minimum temperature (MDTN)"
+        },
+        {
+          "values": [
+            "DATX"
+          ],
+          "summary": "Number of days included in the multiday maximum temperature (MDTX)"
+        },
+        {
+          "values": [
+            "DAWM"
+          ],
+          "summary": "Number of days included in the multiday wind movement (MDWM)"
+        },
+        {
+          "values": [
+            "DWPR"
+          ],
+          "summary": "Number of days with non-zero precipitation included in multiday precipitation total (MDPR)"
+        },
+        {
+          "values": [
+            "EVAP"
+          ],
+          "summary": "Evaporation of water from evaporation pan (tenths of mm)"
+        },
+        {
+          "values": [
+            "FMTM"
+          ],
+          "summary": "Time of fastest mile or fastest 1-minute wind (hours and minutes, i.e., HHMM)"
+        },
+        {
+          "values": [
+            "FRGB"
+          ],
+          "summary": "Base of frozen ground layer (cm)"
+        },
+        {
+          "values": [
+            "FRGT"
+          ],
+          "summary": "Top of frozen ground layer (cm)"
+        },
+        {
+          "values": [
+            "FRTH"
+          ],
+          "summary": "Thickness of frozen ground layer (cm)"
+        },
+        {
+          "values": [
+            "GAHT"
+          ],
+          "summary": "Difference between river and gauge height (cm)"
+        },
+        {
+          "values": [
+            "MDEV"
+          ],
+          "summary": "Multiday evaporation total (tenths of mm; use with DAEV)"
+        },
+        {
+          "values": [
+            "MDPR"
+          ],
+          "summary": "Multiday precipitation total (tenths of mm; use with DAPR and DWPR, if available)"
+        },
+        {
+          "values": [
+            "MDSF"
+          ],
+          "summary": "Multiday snowfall total "
+        },
+        {
+          "values": [
+            "MDTN"
+          ],
+          "summary": "Multiday minimum temperature (tenths of degrees C; use with DATN)"
+        },
+        {
+          "values": [
+            "MDTX"
+          ],
+          "summary": "Multiday maximum temperature (tenths of degress C; use with DATX)"
+        },
+        {
+          "values": [
+            "MDWM"
+          ],
+          "summary": "Multiday wind movement (km)"
+        },
+        {
+          "values": [
+            "MNPN"
+          ],
+          "summary": "Daily minimum temperature of water in an evaporation pan (tenths of degrees C)"
+        },
+        {
+          "values": [
+            "MXPN"
+          ],
+          "summary": "Daily maximum temperature of water in an evaporation pan (tenths of degrees C)"
+        },
+        {
+          "values": [
+            "PGTM"
+          ],
+          "summary": "Peak gust time (hours and minutes, i.e., HHMM)"
+        },
+        {
+          "values": [
+            "PSUN"
+          ],
+          "summary": "Daily percent of possible sunshine (percent)"
+        },
+        {
+          "values": [
+            "SN*#"
+          ],
+          "summary": "Minimum soil temperature (tenths of degrees C) where * corresponds to a code for ground cover and # corresponds to a code for soil depth. See metadata for codes."
+        },
+        {
+          "values": [
+            "SX*# "
+          ],
+          "summary": "Maximum soil temperature (tenths of degrees C) where * corresponds to a code for ground cover and # corresponds to a code for soil depth. See metadata for codes."
+        },
+        {
+          "values": [
+            "TAVG"
+          ],
+          "summary": "Average temperature (tenths of degrees C)"
+        },
+        {
+          "values": [
+            "THIC"
+          ],
+          "summary": "Thickness of ice on water (tenths of mm)"
+        },
+        {
+          "values": [
+            "TOBS"
+          ],
+          "summary": "Temperature at the time of observation (tenths of degrees C)"
+        },
+        {
+          "values": [
+            "TSUN"
+          ],
+          "summary": "Daily total sunshine (minutes)"
+        },
+        {
+          "values": [
+            "WDF1"
+          ],
+          "summary": "Direction of fastest 1-minute wind (degrees)"
+        },
+        {
+          "values": [
+            "WDF2"
+          ],
+          "summary": "Direction of fastest 2-minute wind (degrees)"
+        },
+        {
+          "values": [
+            "WDF5"
+          ],
+          "summary": "Direction of fastest 5-second wind (degrees)"
+        },
+        {
+          "values": [
+            "WDFG"
+          ],
+          "summary": "Direction of peak wind gust (degrees)"
+        },
+        {
+          "values": [
+            "WDFI"
+          ],
+          "summary": "Direction of highest instantaneous wind (degrees)"
+        },
+        {
+          "values": [
+            "WDFM"
+          ],
+          "summary": "Fastest mile wind direction (degrees)"
+        },
+        {
+          "values": [
+            "WDMV"
+          ],
+          "summary": "24-hour wind movement (km)"
+        },
+        {
+          "values": [
+            "WESD"
+          ],
+          "summary": "Water equivalent of snow on the ground (tenths of mm)"
+        },
+        {
+          "values": [
+            "WESF"
+          ],
+          "summary": "Water equivalent of snowfall (tenths of mm)"
+        },
+        {
+          "values": [
+            "WSF1"
+          ],
+          "summary": "Fastest 1-minute wind speed (tenths of meters per second)"
+        },
+        {
+          "values": [
+            "WSF2"
+          ],
+          "summary": "Fastest 2-minute wind speed (tenths of meters per second)"
+        },
+        {
+          "values": [
+            "WSF5"
+          ],
+          "summary": "Fastest 5-second wind speed (tenths of meters per second)"
+        },
+        {
+          "values": [
+            "WSFG"
+          ],
+          "summary": "Peak gust wind speed (tenths of meters per second)"
+        },
+        {
+          "values": [
+            "WSFI"
+          ],
+          "summary": "Highest instantaneous wind speed (tenths of meters per second)"
+        },
+        {
+          "values": [
+            "WSFM"
+          ],
+          "summary": "Fastest mile wind speed (tenths of meters per second)"
+        },
+        {
+          "values": [
+            "WT**"
+          ],
+          "summary": "Weather Type, see metadata for ** categories"
+        },
+        {
+          "values": [
+            "WV**"
+          ],
+          "summary": "Weather in the Vicinity, see metadata for ** categories"
+        }
+      ],
+      "file:size": 50853,
       "roles": [
         "data"
       ]
@@ -58,14 +636,69 @@
       "href": "https://www1.ncdc.noaa.gov/pub/data/ghcn/daily/ghcnd-stations.txt",
       "type": "text/plain",
       "title": "GHCNd Stations",
+      "table:columns": [
+        {
+          "name": "ID",
+          "description": "11 character station identification code.",
+          "type": "str"
+        },
+        {
+          "name": "LATITUDE",
+          "description": "Latitude of the station (in decimal degrees).",
+          "type": "float"
+        },
+        {
+          "name": "LONGITUDE",
+          "description": "Longitude of the station (in decimal degrees).",
+          "type": "float"
+        },
+        {
+          "name": "ELEVATION",
+          "description": "Elevation of the station (in meters, missing = -999.9).",
+          "type": "float"
+        },
+        {
+          "name": "STATE",
+          "description": "U.S. postal code for the state (for U.S. stations only).",
+          "type": "str"
+        },
+        {
+          "name": "NAME",
+          "description": "The name of the station.",
+          "type": "str"
+        },
+        {
+          "name": "GSN FLAG",
+          "description": "A flag that indicates whether the station is part of the GCOS Surface Network (GSN).",
+          "type": "str"
+        },
+        {
+          "name": "HCN/CRN FLAT",
+          "description": "A flag that indicates whether the station is part of the U.S. Historical Climatology Network (HCN) or U.S. Climate Refererence Network (CRN).",
+          "type": "str"
+        },
+        {
+          "name": "WMO ID",
+          "description": "the World Meteorological Organization (WMO) number for the station. If the station has no WMO number (or one has not yet been matched to this station), then the field is blank.",
+          "type": "str"
+        }
+      ],
       "roles": [
         "metadata"
       ]
     },
     "Metadata": {
-      "href": "https://www1.ncdc.noaa.gov/pub/data/ghcn/daily/by_year/readme-by_year.txt",
+      "href": "https://www1.ncdc.noaa.gov/pub/data/ghcn/daily/readme.txt",
       "type": "text/plain",
       "title": "GHCNd Metadata",
+      "roles": [
+        "metadata"
+      ]
+    },
+    "Metadata, Additional": {
+      "href": "https://www1.ncdc.noaa.gov/pub/data/ghcn/daily/by_year/readme-by_year.txt",
+      "type": "text/plain",
+      "title": "Metadata, Additional",
       "roles": [
         "metadata"
       ]
@@ -78,7 +711,9 @@
     85.0
   ],
   "stac_extensions": [
+    "https://stac-extensions.github.io/table/v1.0.0/schema.json",
     "https://stac-extensions.github.io/scientific/v1.0.0/schema.json",
-    "https://stac-extensions.github.io/projection/v1.0.0/schema.json"
+    "https://stac-extensions.github.io/projection/v1.0.0/schema.json",
+    "https://stac-extensions.github.io/file/v2.0.0/schema.json"
   ]
 }

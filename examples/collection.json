@@ -14,9 +14,14 @@
       "href": "https://doi.org/10.7289/V5D21VHZ"
     },
     {
+      "rel": "license",
+      "href": "https://creativecommons.org/licenses/by/4.0/",
+      "title": "Attribution 4.0 International (CC BY 4.0)"
+    },
+    {
       "rel": "via",
       "href": "https://www.ncei.noaa.gov/metadata/geoportal/rest/metadata/item/gov.noaa.ncdc:C00861/html",
-      "title": "Homepage"
+      "title": "HOMEPAGE_URL"
     },
     {
       "rel": "self",
@@ -77,7 +82,7 @@
       "interval": [
         [
           "1763-01-01T00:00:00Z",
-          null
+          "2021-10-19T00:00:00Z"
         ]
       ]
     }
@@ -93,13 +98,6 @@
         "producer"
       ],
       "url": "https://www.ncei.noaa.gov/metadata/geoportal/rest/metadata/item/gov.noaa.ncdc:C00861/html"
-    },
-    {
-      "name": "Microsoft",
-      "roles": [
-        "host"
-      ],
-      "url": "https://planetarycomputer.microsoft.com"
     }
   ],
   "summaries": {
@@ -117,9 +115,17 @@
       ]
     },
     "Metadata": {
-      "href": "https://www1.ncdc.noaa.gov/pub/data/ghcn/daily/by_year/readme-by_year.txt",
+      "href": "https://www1.ncdc.noaa.gov/pub/data/ghcn/daily/readme.txt",
       "type": "text/plain",
       "title": "Metadata",
+      "roles": [
+        "metadata"
+      ]
+    },
+    "Metadata, Additional": {
+      "href": "https://www1.ncdc.noaa.gov/pub/data/ghcn/daily/by_year/readme-by_year.txt",
+      "type": "text/plain",
+      "title": "Metadata, Additional",
       "roles": [
         "metadata"
       ]
