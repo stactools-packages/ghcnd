@@ -72,7 +72,7 @@ def create_ghcnd_command(cli):
     @click.option("-s",
                   "--source",
                   required=False,
-                  help="The source directory for the Item data assets.",
+                  help="The source for the data asset.",
                   default=YEARS_URL)
     @click.option(
         "-d",
