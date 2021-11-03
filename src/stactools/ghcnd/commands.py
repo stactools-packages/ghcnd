@@ -3,7 +3,6 @@ import logging
 import click
 
 from stactools.ghcnd import stac
-from stactools.ghcnd.constants import YEARS_URL
 
 logger = logging.getLogger(__name__)
 
@@ -69,11 +68,12 @@ def create_ghcnd_command(cli):
     @ghcnd.command(
         "populate-collection",
         short_help="Populate the GHCNd STAC Collection with all items")
-    @click.option("-s",
-                  "--source",
-                  required=False,
-                  help="The source for the data asset.",
-                  default=YEARS_URL)
+    @click.option(
+        "-s",
+        "--source",
+        required=True,
+        help="The source for the data asset.",
+    )
     @click.option(
         "-d",
         "--destination",
