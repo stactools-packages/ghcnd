@@ -1,6 +1,6 @@
 import logging
 import mimetypes
-from typing import Any, List
+from typing import Any, List, Optional, Callable
 
 import fsspec
 from pystac import (
@@ -137,7 +137,9 @@ def create_collection() -> Collection:
     return collection
 
 
-def create_item(data_asset_href: str) -> Item:
+def create_item(data_asset_href: str,
+    data_href_modifier: Optional[Callable] = None,
+) -> Item:
     """Create a STAC Item
     Create a STAC Item for one year of the GHCNd.
 
@@ -147,6 +149,10 @@ def create_item(data_asset_href: str) -> Item:
     Returns:
         Item: STAC Item object
     """
+    if data_href_modifier is not None:
+        data_mod_href = data_href_modifier(data_asset_href)
+    else:
+        data_mod_href = data_asset_href
 
     polygon = box(*SPATIAL_EXTENT, ccw=True)
     coordinates = [list(i) for i in list(polygon.exterior.coords)]
@@ -242,7 +248,7 @@ def create_item(data_asset_href: str) -> Item:
         "summary": summary,
     } for value, summary in ELEMENTS_VALUES.items()]
     data_asset_file_ext.values = mapping
-    with fsspec.open(data_asset_href) as file:
+    with fsspec.open(data_mod_href) as file:
         size = file.size
         if size is not None:
             data_asset_file_ext.size = size
