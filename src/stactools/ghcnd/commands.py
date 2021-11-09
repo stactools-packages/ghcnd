@@ -50,14 +50,14 @@ def create_ghcnd_command(cli):
         "-d",
         "--destination",
         required=True,
-        help="An HREF for the STAC Collection.",
+        help="The output path for the STAC Item.",
     )
     def create_item_command(source: str, destination: str):
         """Creates a STAC Item
 
         Args:
             source (str): HREF of the Asset associated with the Item
-            destination (str): An HREF for the STAC Collection
+            destination (str): The output path for the STAC Item
         """
         item = stac.create_item(source)
         item.save_object(dest_href=destination)
