@@ -1,6 +1,6 @@
 import logging
 import mimetypes
-from typing import Any, List, Optional, Callable
+from typing import Any, Callable, List, Optional
 
 import fsspec
 from pystac import (
@@ -19,6 +19,7 @@ from pystac.extensions.projection import (
     SummariesProjectionExtension,
 )
 from pystac.extensions.scientific import ScientificExtension
+from pystac.extensions.table import Column, TableExtension
 from pystac.item import Item
 from pystac.link import Link
 from pystac.rel_type import RelType
@@ -137,7 +138,8 @@ def create_collection() -> Collection:
     return collection
 
 
-def create_item(data_asset_href: str,
+def create_item(
+    data_asset_href: str,
     data_href_modifier: Optional[Callable] = None,
 ) -> Item:
     """Create a STAC Item
@@ -158,22 +160,11 @@ def create_item(data_asset_href: str,
     coordinates = [list(i) for i in list(polygon.exterior.coords)]
     geometry = {"type": "Polygon", "coordinates": [coordinates]}
 
-    # Data & Station tables assumed to be left merged on column "ID"
-    table_columns = DATA_TABLE_COLUMNS + STATION_TABLE_COLUMNS + [
-        PRIMARY_GEOMETRY_COLUMN
-    ]
-    table_columns = [
-        i for n, i in enumerate(table_columns)
-        if i not in table_columns[n + 1:]
-    ]
-
     properties = {
         "title": "GHCNd",
         "description": "Global Historical Climate Network-daily",
         "start_datetime": TEMPORAL_EXTENT[0],
         "end_datetime": TEMPORAL_EXTENT[1],
-        "table:columns": table_columns,
-        "table:primary_geometry": PRIMARY_GEOMETRY_COLUMN["name"],
     }
 
     item = Item(
@@ -191,12 +182,25 @@ def create_item(data_asset_href: str,
     sci_ext.doi = DOI
     sci_ext.citation = CITATION
 
-    # Projection Extensions
+    # Projection Extension
     proj_ext = ProjectionExtension.ext(item, add_if_missing=True)
     proj_ext.epsg = GHCND_EPSG
     proj_ext.wkt2 = GHCND_CRS.to_wkt()
     proj_ext.bbox = SPATIAL_EXTENT
     proj_ext.geometry = geometry
+
+    # Data & Station tables assumed to be left merged on column "ID"
+    table_columns_dicts = DATA_TABLE_COLUMNS + STATION_TABLE_COLUMNS + [
+        PRIMARY_GEOMETRY_COLUMN
+    ]
+    table_columns: List[Any] = [
+        Column(col).to_dict() for i, col in enumerate(table_columns_dicts)
+        if col not in table_columns_dicts[i + 1:]
+    ]
+    # Table extension
+    table_ext = TableExtension.ext(item, add_if_missing=True)
+    table_ext.columns = table_columns
+    table_ext.primary_geometry = PRIMARY_GEOMETRY_COLUMN["name"]
 
     media_type = mimetypes.guess_type(data_asset_href)[0]
     data_asset = Asset(href=data_asset_href,

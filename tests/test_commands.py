@@ -73,3 +73,23 @@ class CommandsTest(CliTestCase):
 
             jsons = [p for p in Path(tmp_dir).rglob('*.json')]
             self.assertEqual(len(jsons), 2)
+
+    def test_create_data_asset(self):
+        with TemporaryDirectory() as tmp_dir:
+
+            result = self.run_command([
+                "ghcnd", "create-data-asset", "-d",
+                os.path.join(tmp_dir, "downloads"), "-u",
+                os.path.join(tmp_dir, "downloads"), "-o",
+                os.path.join(tmp_dir, "ghcnd.parquet"), "-s", 1800, "-e", 1802
+            ])
+            self.assertEqual(result.exit_code,
+                             0,
+                             msg="\n{}".format(result.output))
+
+            gzs = [p for p in Path(tmp_dir).rglob('*.gz')]
+            self.assertEqual(len(gzs), 3)
+            csvs = [p for p in Path(tmp_dir).rglob('*.csv')]
+            self.assertEqual(len(csvs), 3)
+            parquets = [p for p in Path(tmp_dir).rglob('*.parquet')]
+            self.assertEqual(len(parquets), 1)
