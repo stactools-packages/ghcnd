@@ -8,7 +8,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
 ### Added
 
-- Nothing.
+- Included the `create-data-asset` command to download and process the source data into one data asset file.
 
 ### Deprecated
 
@@ -20,4 +20,4 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
 ### Fixed
 
-- Nothing.
+- Implemented the new `pystac` methods for the `table` extension.

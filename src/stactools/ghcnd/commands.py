@@ -3,6 +3,7 @@ import logging
 import click
 
 from stactools.ghcnd import stac
+from stactools.ghcnd.asset import CreateDataAsset
 
 logger = logging.getLogger(__name__)
 
@@ -97,6 +98,57 @@ def create_ghcnd_command(cli):
         collection.normalize_hrefs(destination)
         collection.save(dest_href=destination)
         collection.validate()
+
+        return None
+
+    @ghcnd.command(
+        "create-data-asset",
+        short_help="Download and process the source data into the data asset.")
+    @click.option(
+        "-d",
+        "--downloads",
+        required=True,
+        help="Directory to hold downloads.",
+    )
+    @click.option(
+        "-u",
+        "--unzipped",
+        required=True,
+        help="Directory to hold unzipped files.",
+    )
+    @click.option(
+        "-o",
+        "--output_path",
+        required=True,
+        help="Path for output file (Parquet format).",
+    )
+    @click.option(
+        "-s",
+        "--start_year",
+        required=False,
+        help="Starting year to process (min: 1763, max: current year).",
+        default=1763)
+    @click.option("-e",
+                  "--end_year",
+                  required=False,
+                  help="Final year to process (min: 1763, max: current year).",
+                  default=2021)
+    def create_data_asset_command(downloads: str, unzipped: str,
+                                  output_path: str, start_year: int,
+                                  end_year: int):
+        """Download, unzip and process the yearly GHCNd data into one data asset.
+         Output is held in Parquet format.
+
+        Args:
+            downloads (str): Directory to hold downloads.
+            unzipped (str): Directory to hold unzipped files.
+            output_path (str): Path for output file (Parquet format).
+            start_year (int): Starting year to process (min: 1763, max: current year).
+            end_year (int): Final year to process (min: 1763, max: current_year).
+        """
+
+        data_asset = CreateDataAsset(downloads, unzipped, output_path)
+        data_asset.create_data_asset(start_year, end_year)
 
         return None
 
